@@ -44,13 +44,8 @@ if ($_SERVER['HTTPS'] != "on")
 	exit();    
 }
 
-include "project-io-config.php";
-/*$api_key = "ddff8a63-cbc3-4723-8415-b910c4d8770d";  //IO HPA API key - WILL BE CHANGED!!!!!
-$site_domain = "https://lriodev.wpengine.com";
-$hpa_url = "https://lr-dev-deadpool-hpa-cluster-dev1.div4.io/hpa/v1";
-$provision_url = "http://ae5924b70f51111e9b30c0aacafe597f-457779803.us-east-1.elb.amazonaws.com/provision";
-$admin_console_url = "https://devadmin-console.loginradius.io/login";
-$debug_email = "felix.ho@loginradius.com";*/
+$api_key = "ddff8a63-cbc3-4723-8415-b910c4d8770d";  //IO HPA API key - WILL BE CHANGED!!!!!
+
 
 session_start();
 date_default_timezone_set('America/Vancouver');
@@ -76,7 +71,7 @@ else {
     header("location: /");
     exit();  //default: send to home page
 }
-if ($target_name == "index" || $target_name == "page-layout" || $target_name == "meta-data" || $target_name == "config" || strpos($target_name, ".php") !== false) {
+if ($target_name == "index" || $target_name == "page-layout" || $target_name == "meta-data" || strpos($target_name, ".php") !== false) {
     header("location: /");
     exit();  //default: send to home page
 }
@@ -87,26 +82,27 @@ if ($target_name == "xml-sitemap") {
 }
 
 //invoke 1-time only after successful full sgin-up process
-/*if ($target_name == "auto-login") {    
+if ($target_name == "auto-login") {    
     if ($_SESSION['uid'] != "" && $_SESSION['email'] != ""&& $_SESSION['password'] != "") {
-        $login_api_url = "$hpa_url/login?apiKey=$api_key";
+        $login_api_url = "https://lr-dev-deadpool-hpa-cluster-dev1.div4.io/hpa/v1/login?apiKey=$api_key";
         $post_data = array("email" => $_SESSION['email'], "password" => base64_decode($_SESSION['password']));
         $payload = json_encode($post_data);
         $reply = json_decode(lr_api_call($login_api_url, $payload, "POST"));
         if (isset($reply->access_token) && isset($reply->expires_in)) {
+            //var_dump($reply);
             //redirect to admin console with access token attached to URL
             session_destroy();
-            header("location: $admin_console_url?token=".$reply->access_token);
+            header("location: http://devadmin-console.loginradius.io/login?token=".$reply->access_token);
             exit();       
         }
         else {
-            if (in_array($reply->ErrorCode, $api_error_codes_system)/* $reply->ErrorCode != ""*//*) {
+            if (in_array($reply->ErrorCode, $api_error_codes_system)/* $reply->ErrorCode != ""*/) {
                 //email
                 $msg = "Error code: ".$reply->ErrorCode."\n".$reply->Message."\n".$reply->Description."\n\n";
                 $msg .= "Login data:\n\n";
                 $msg .= "Email: ".$_SESSION['email']."\n";
                 $msg .= "Password: ".$_SESSION['email']."\n";
-                mail($debug_email, "$site_name Auto-login System Error", $msg);
+                mail("felix.ho@loginradius.com", "Project IO Auto-login System Error", $msg);
                 session_destroy();
                 header("location: /error/");
                 exit();
@@ -115,7 +111,7 @@ if ($target_name == "xml-sitemap") {
             $msg .= "Login data:\n\n";
             $msg .= "Email: ".$_SESSION['email']."\n";
             $msg .= "Password: ".$_SESSION['email']."\n";
-            mail($debug_email, "$site_name Auto-login Error??", $msg);
+            mail("felix.ho@loginradius.com", "Project IO Auto-login Error??", $msg);
             session_destroy();
             header("location: /error/");
             exit();
@@ -125,7 +121,7 @@ if ($target_name == "xml-sitemap") {
         header("location: /");
         exit();  //default: send to home page
     }
-}*/
+}
 
 //handle appname check javascript AJAX call
 /*if ($target_name == "check-appname") {    
@@ -214,7 +210,7 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "signup-submit") {
     }
 
     //registration API: change the email template and the verification link (domain part) here!
-    $register_api_url = "$hpa_url/register?apiKey=$api_key&emailtemplate=test-io&verificationurl=$site_domain/signup-verification/";
+    $register_api_url = "https://lr-dev-deadpool-hpa-cluster-dev1.div4.io/hpa/v1/register?apiKey=$api_key&emailtemplate=test-io&verificationurl=https://lrio.wpengine.com/signup-verification/";
     if ($promocode == "") {
         $post_data = array("firstname" => $firstname, "lastname" => $lastname, "email" => $email, "password" => $password);
     }
@@ -232,15 +228,12 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "signup-submit") {
         $_SESSION['name'] = $firstname;
         $_SESSION['email'] = $email;
         $_SESSION['password'] = base64_encode($password);
-        //remove all special characters!
-        $temp_appname = str_replace(array('\'', '"', ',', '.', ';', ':', '<', '>', '~', '`', '!', '#', '\$', '%', '^', '&', '*', '(', ')', '/', '?', '{', '}', '[', ']', '_', '+', '='), '-', $firstname);
-        if (strlen($temp_appname) > 5) {
-            $suggest_appname = "dev-".substr($temp_appname, 0, 5)."-".mt_rand(10000, 99999);
+        if (strlen($firsname) > 5) {
+            $_SESSION['suggest_appname'] = "dev-".substr($firstname, 0, 5)."-".mt_rand(10000, 99999);
         }
         else {
-            $suggest_appname = "dev-$temp_appname-".mt_rand(10000, 99999);
-        }
-        $_SESSION['suggest_appname'] = $suggest_appname;       
+            $_SESSION['suggest_appname'] = "dev-$firstname-".mt_rand(10000, 99999);
+        }       
         $_SESSION['domain'] = htmlentities(substr($email, $separate_pos + 1));
         $_SESSION['location'] = "US";  //force datacenter default
         header("location: /finish-signup/");  //second step
@@ -255,7 +248,7 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "signup-submit") {
             $msg .= "Name: $firstname\n";
             $msg .= "Email: $email\n";
             $msg .= "Password: ".base64_encode($password)."\n";
-            mail($debug_email, "$site_name Signup Submission System Error", $msg);
+            mail("felix.ho@loginradius.com", "Project IO Signup Submission System Error", $msg);
             header("location: /error/");
             exit();
         }
@@ -273,7 +266,7 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "signup-submit") {
         $msg .= "Name: $firstname\n";
         $msg .= "Email: $email\n";
         $msg .= "Password: ".base64_encode($password)."\n";
-        mail($debug_email, "$site_name Signup Submission Error??", $msg);
+        mail("felix.ho@loginradius.com", "Project IO Signup Submission Error??", $msg);
         header("location: /error/");
         exit();
     }
@@ -292,8 +285,8 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "project-setup-subm
         header("location: /finish-signup/");
         exit();
     }
-    $appname_check_reply = json_decode(file_get_contents("$provision_url/app?appName=$appname"));
-    //API error
+    $appname_check_reply = json_decode(file_get_contents("http://aeb626146e63a11e9a35b121fdffb546-696474166.us-east-1.elb.amazonaws.com/provision/app?appName=$appname"));
+    //IF appname is not available, prompt for a new one! => throw back to the form
     if (in_array($appname_check_reply->ErrorCode, $api_error_codes_system)/* $reply->ErrorCode != ""*/) {
         //email
         $msg = "Error code: ".$appname_check_reply->ErrorCode."\n".$appname_check_reply->Message."\n".$appname_check_reply->Description."\n\n";
@@ -304,11 +297,10 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "project-setup-subm
         $msg .= "AppName: $appname\n";
         $msg .= "Domain: $domain\n";
         $msg .= "DB Location: $location\n";
-        mail($debug_email, "$site_name AppName Check System Error", $msg);
+        mail("felix.ho@loginradius.com", "Project IO AppName Check System Error", $msg);
         header("location: /error/");
         exit();
     }
-    //IF appname is not available, prompt for a new one! => throw back to the form
     if (isset($appname_check_reply->IsSiteRegistered) && $appname_check_reply->IsSiteRegistered === true) {
         $_SESSION['error_message'] = '<div><p class="error" id=user-error>Sorry, the app name you chose is not available<br>Please create a new one or use the one suggested below.</p></div>';
         $_SESSION['suggest_appname'] = $appname_check_reply->AvailableSiteName;
@@ -323,50 +315,17 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "project-setup-subm
         if (!in_array($location, $default_db_locations)) {
             $location = "US";  //force default
         }
-        $create_site_api_url = "$provision_url/app?apiKey=$api_key";
+        $create_site_api_url = "http://aeb626146e63a11e9a35b121fdffb546-696474166.us-east-1.elb.amazonaws.com/provision/app?apiKey=$api_key";
         $post_data = array("Name" => $_SESSION['name'], "Email" => $_SESSION['email'], "Uid" => $_SESSION['uid'], "AppName" => $appname, "Domain" => $domain, "Location" => $location);
         $payload = json_encode($post_data);
         $reply = json_decode(lr_api_call($create_site_api_url, $payload, "POST"));
         if (isset($reply->IsPosted) && $reply->IsPosted === true) {
-            //if (isset($_SESSION['error_message']) && $_SESSION['error_message'] != "") {
-                //$_SESSION['error_message'] = "";  //remove error state
-            //}
+            if (isset($_SESSION['error_message']) && $_SESSION['error_message'] != "") {
+                $_SESSION['error_message'] = "";  //remove error state
+            }
             //header("location: /signup-thank-you/");
-            //header("location: /auto-login/");
-            //exit();
-            //log user to admin console
-            $login_api_url = "$hpa_url/login?apiKey=$api_key";
-            $post_data = array("email" => $_SESSION['email'], "password" => base64_decode($_SESSION['password']));
-            $payload = json_encode($post_data);
-            $reply = json_decode(lr_api_call($login_api_url, $payload, "POST"));
-            if (isset($reply->access_token) && isset($reply->expires_in)) {
-                //redirect to admin console with access token attached to URL
-                session_destroy();
-                header("location: $admin_console_url?token=".$reply->access_token);
-                exit();       
-            }
-            else {
-                if (in_array($reply->ErrorCode, $api_error_codes_system)/* $reply->ErrorCode != ""*/) {
-                    //email
-                    $msg = "Error code: ".$reply->ErrorCode."\n".$reply->Message."\n".$reply->Description."\n\n";
-                    $msg .= "Login data:\n\n";
-                    $msg .= "Email: ".$_SESSION['email']."\n";
-                    $msg .= "Password: ".$_SESSION['email']."\n";
-                    mail($debug_email, "$site_name Auto-login System Error", $msg);
-                    session_destroy();
-                    header("location: /error/");
-                    exit();
-                }            
-                $msg = "API reply dump: ".var_export($reply, true)."\n\n";
-                $msg .= "Login data:\n\n";
-                $msg .= "Email: ".$_SESSION['email']."\n";
-                $msg .= "Password: ".$_SESSION['email']."\n";
-                mail($debug_email, "$site_name Auto-login Error??", $msg);
-                session_destroy();
-                header("location: /error/");
-                exit();
-            }
-
+            header("location: /auto-login/");
+            exit();
         }
         else {
             if (in_array($reply->ErrorCode, $api_error_codes_system)/* $reply->ErrorCode != ""*/) {
@@ -379,13 +338,8 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "project-setup-subm
                 $msg .= "AppName: $appname\n";
                 $msg .= "Domain: $domain\n";
                 $msg .= "DB Location: $location\n";
-                mail($debug_email, "$site_name AppName Setup Submission System Error", $msg);
-                if ($reply->ErrorCode == "4123") {
-                    header("location: /error-limit-exceed/");
-                }
-                else {
-                    header("location: /error/");
-                }
+                mail("felix.ho@loginradius.com", "Project IO AppName Setup Submission System Error", $msg);
+                header("location: /error/");
                 exit();
             }
             if (in_array($reply->ErrorCode, $api_error_codes_user)) {
@@ -402,7 +356,7 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "project-setup-subm
             $msg .= "AppName: $appname\n";
             $msg .= "Domain: $domain\n";
             $msg .= "DB Location: $location\n";
-            mail($debug_email, "$site_name AppName Setup Submission Error??", $msg);
+            mail("felix.ho@loginradius.com", "Project IO AppName Setup Submission Error??", $msg);
             header("location: /error/");
             exit();
         }
@@ -415,7 +369,7 @@ if ($target_name == "signup-verification" && isset($_GET['vtype']) && $_GET['vty
     $already_verify = false;
     $verify_again = false;
     $verification_code = htmlentities($_GET['vtoken']);
-    $email_verify_api_url = "$hpa_url/email/verify?apiKey=$api_key";
+    $email_verify_api_url = "https://lr-dev-deadpool-hpa-cluster-dev1.div4.io/hpa/v1/email/verify?apiKey=$api_key";
     $post_data = array("verificationtoken" => $verification_code);
     $payload = json_encode($post_data);
     $reply = json_decode(lr_api_call($email_verify_api_url, $payload, "PUT"));
@@ -431,7 +385,7 @@ if ($target_name == "signup-verification" && isset($_GET['vtype']) && $_GET['vty
         //NOT VERIFIED BUT code expired => regenerate verification code
         $verify_again = true;
         $target_email = htmlentities($_GET['email']);
-        $reverify_api_url = "$hpa_url/email/resendverify?apiKey=$api_key&emailtemplate=test-io&verificationurl=$site_domain/signup-verification/";
+        $reverify_api_url = "https://lr-dev-deadpool-hpa-cluster-dev1.div4.io/hpa/v1/email/resendverify?apiKey=$api_key&emailtemplate=test-io&verificationurl=https://lrio.wpengine.com/signup-verification/";
         $post_data = array("email" => $target_email);
         $payload = json_encode($post_data);
         $reverify_reply = json_decode(lr_api_call($reverify_api_url, $payload, "PUT"));
@@ -441,9 +395,9 @@ if ($target_name == "signup-verification" && isset($_GET['vtype']) && $_GET['vty
             //email
             $msg = "Error code: ".$reply->ErrorCode."\n".$reply->Message."\n".$reply->Description."\n\n";
             $msg .= "Login data:\n\n";
-            $msg .= "Email: ".$_GET['email']."\n";
-            //$msg .= "Password: ".base64_encode($password)."\n";
-            mail($debug_email, "$site_name Email Verify API System Error", $msg);
+            $msg .= "Email: $email\n";
+            $msg .= "Password: ".base64_encode($password)."\n";
+            mail("felix.ho@loginradius.com", "Project IO Email Verify API System Error", $msg);
             header("location: /error/");
             exit();
         }
@@ -457,16 +411,16 @@ if ($target_name == "signup-verification" && isset($_GET['vtype']) && $_GET['vty
             //$msg .= "Name: $firstname $lastname\n";
             //$msg .= "Email: $email\n";
             //$msg .= "Password: ".base64_encode($password)."\n";
-            //mail($debug_email, "$site_name Signup Submission System Error", $msg);
+            //mail("felix.ho@loginradius.com", "Project IO Signup Submission System Error", $msg);
             //header("location: /login/");
             //exit();
         }*/
         $msg = "API reply dump: ".var_export($reply, true)."\n\n";
         $msg .= "Login data:\n\n";
         //$msg .= "Name: $firstname $lastname\n";
-        $msg .= "Email: ".$_GET['email']."\n";
+        //$msg .= "Email: $email\n";
         //$msg .= "Password: ".base64_encode($password)."\n";
-        mail($debug_email, "$site_name Email Verify API Error??", $msg);
+        mail("felix.ho@loginradius.com", "Project IO Email Verify API Error??", $msg);
         header("location: /error/");
         exit();
     }
@@ -477,24 +431,24 @@ if ($target_name == "signup-verification" && isset($_GET['vtype']) && $_GET['vty
 if (isset($_POST['form-action']) && $_POST['form-action'] == "login-submit") {
     $email = htmlentities($_POST['email']);
     $password = htmlentities($_POST['password']);
-    $login_api_url = "$hpa_url/login?apiKey=$api_key";
+    $login_api_url = "https://lr-dev-deadpool-hpa-cluster-dev1.div4.io/hpa/v1/login?apiKey=$api_key";
     $post_data = array("email" => $email, "password" => $password);
     $payload = json_encode($post_data);
     $reply = json_decode(lr_api_call($login_api_url, $payload, "POST"));
     if (isset($reply->access_token) && isset($reply->expires_in)) {
+        //echo $reply->access_token;
         //check if account has verified email address (if not: send reverification email)
-        $identity_check_reply = json_decode(file_get_contents("$hpa_url/profile?apiKey=$api_key&access_token=$reply->access_token"));
+        $identity_check_reply = json_decode(file_get_contents("https://lr-dev-deadpool-hpa-cluster-dev1.div4.io/hpa/v1/profile?apiKey=$api_key&access_token=$reply->access_token"));
         if ($identity_check_reply->EmailVerified == NULL) {
-            $reverify_api_url = "$hpa_url/email/resendverify?apiKey=$api_key&emailtemplate=test-io&verificationurl=$site_domain/signup-verification/";
+            $reverify_api_url = "https://lr-dev-deadpool-hpa-cluster-dev1.div4.io/hpa/v1/email/resendverify?apiKey=$api_key&emailtemplate=test-io&verificationurl=https://lrio.wpengine.com/signup-verification/";
             $post_data = array("email" => $email);
             $payload = json_encode($post_data);
             $reverify_reply = json_decode(lr_api_call($reverify_api_url, $payload, "PUT"));
         }
-        $appname_exist_check = json_decode(file_get_contents("$provision_url/apps?Uid=".$identity_check_reply->Uid));
+        $appname_exist_check = json_decode(file_get_contents("http://aeb626146e63a11e9a35b121fdffb546-696474166.us-east-1.elb.amazonaws.com/provision/apps?Uid=".$identity_check_reply->Uid));
         var_dump($appname_exist_check);
         if (isset($appname_exist_check->IsExist) && $appname_exist_check->IsExist == false) {
             //force back to the appName setup page!
-            $separate_pos = strpos($email, "@");
             $_SESSION['uid'] = $identity_check_reply->Uid;
             $_SESSION['name'] = $identity_check_reply->FirstName;
             $_SESSION['email'] = $email;
@@ -504,14 +458,15 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "login-submit") {
             }
             else {
                 $_SESSION['suggest_appname'] = "dev-$identity_check_reply->FirstName-".mt_rand(10000, 99999);
-            } 
+            }       
             $_SESSION['domain'] = htmlentities(substr($email, $separate_pos + 1));
             $_SESSION['location'] = "US";  //force datacenter default
             header("location: /finish-signup/");  //second step
             exit();
         }
         session_destroy();
-        header("location: $admin_console_url?token=".$reply->access_token);
+        header("location: http://devadmin-console.loginradius.io/login?token=".$reply->access_token);
+        //echo "http://devadmin-console.loginradius.io/login?token=".$reply->access_token;
         exit();
     }
     else {
@@ -521,7 +476,7 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "login-submit") {
             $msg .= "Login data:\n\n";
             $msg .= "Email: $email\n";
             $msg .= "Password: ".base64_encode($password)."\n";
-            mail($debug_email, "$site_name Login Form Submission System Error", $msg);
+            mail("felix.ho@loginradius.com", "Project IO Login Form Submission System Error", $msg);
             header("location: /error/");
             exit();
         }
@@ -534,7 +489,7 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "login-submit") {
             //$msg .= "Name: $firstname $lastname\n";
             //$msg .= "Email: $email\n";
             //$msg .= "Password: ".base64_encode($password)."\n";
-            //mail($debug_email, "$site_name Signup Submission System Error", $msg);
+            //mail("felix.ho@loginradius.com", "Project IO Signup Submission System Error", $msg);
             header("location: /login/");
             exit();
         }
@@ -543,7 +498,7 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "login-submit") {
         $msg .= "Name: $firstname $lastname\n";
         $msg .= "Email: $email\n";
         $msg .= "Password: ".base64_encode($password)."\n";
-        mail($debug_email, "$site_name Login Form Error??", $msg);
+        mail("felix.ho@loginradius.com", "Project IO Login Form Error??", $msg);
         header("location: /error/");
         exit();
     }
@@ -552,12 +507,26 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "login-submit") {
 //forgot PW
 if (isset($_POST['form-action']) && $_POST['form-action'] == "forgot-pw-submit") {
     $email = htmlentities($_POST['email']);
-    $forgot_pw_api_url = "$hpa_url/password/forgot?apiKey=$api_key&emailTemplate=reset-test-io&resetPasswordUrl=$site_domain/reset-password/";
+    $forgot_pw_api_url = "https://lr-dev-deadpool-hpa-cluster-dev1.div4.io/hpa/v1/password/forgot?apiKey=$api_key&emailTemplate=reset-test-io&resetPasswordUrl=https://lrio.wpengine.com/reset-password/";
     $post_data = array("email" => $email);
     $payload = json_encode($post_data);
     $reply = json_decode(lr_api_call($forgot_pw_api_url, $payload, "POST"));
+    //var_dump($reply);
     if (isset($reply->IsPosted) && $reply->IsPosted == true) {
+        //echo $reply->access_token;
+        //check if account has verified email address (if not: send reverification email)
         $show_form = "N";
+        /*$identity_check_reply = json_decode(file_get_contents("https://lr-dev-deadpool-hpa-cluster-dev1.div4.io/hpa/v1/profile?apiKey=$api_key&access_token=$reply->access_token"));
+        if ($identity_check_reply->EmailVerified == NULL) {
+            $reverify_api_url = "https://lr-dev-deadpool-hpa-cluster-dev1.div4.io/hpa/v1/email/resendverify?apiKey=$api_key&emailtemplate=test-io&verificationurl=https://lrio.wpengine.com/signup-verification/";
+            $post_data = array("email" => $email);
+            $payload = json_encode($post_data);
+            $reverify_reply = json_decode(lr_api_call($reverify_api_url, $payload, "PUT"));
+        }
+        session_destroy();
+        header("location: http://devadmin-console.loginradius.io/login?token=".$reply->access_token);
+        //echo "http://devadmin-console.loginradius.io/login?token=".$reply->access_token;
+        exit();*/
     }
     else {
         if (in_array($reply->ErrorCode, $api_error_codes_system)) {
@@ -565,22 +534,29 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "forgot-pw-submit")
             $msg = "Error code: ".$reply->ErrorCode."\n".$reply->Message."\n".$reply->Description."\n\n";
             $msg .= "Submit data:\n\n";
             $msg .= "Email: $email\n";
-            mail($debug_email, "Project IO Forgot PW Form Submission System Error", $msg);
+            mail("felix.ho@loginradius.com", "Project IO Forgot PW Form Submission System Error", $msg);
             header("location: /error/");
             exit();
         }
-        else if (in_array($reply->ErrorCode, $api_error_codes_user)) {
+        if (in_array($reply->ErrorCode, $api_error_codes_user)) {
             $_SESSION['error_message'] = '<div><p class="error" id="user-error">'.$reply->Message."<br>$reply->Description</p></div>";
             $_SESSION['email'] = $email;
+            //email
+            //$msg = "Error code: ".$reply->ErrorCode."\n".$reply->Message."\n".$reply->Description."\n\n";
+            //$msg .= "Signup data:\n\n";
+            //$msg .= "Name: $firstname $lastname\n";
+            //$msg .= "Email: $email\n";
+            //$msg .= "Password: ".base64_encode($password)."\n";
+            //mail("felix.ho@loginradius.com", "Project IO Forgot PW Form Submission System Error", $msg);
+            //header("location: /forgot-passwp/");
+            //exit();
         }
-        else {
-            $msg = "API reply dump: ".var_export($reply, true)."\n\n";
-            $msg .= "Submit data:\n\n";
-            $msg .= "Email: $email\n";
-            mail($debug_email, "$site_name Forgot PW Form Error??", $msg);
-            header("location: /error/");
-            exit();
-        }        
+        $msg = "API reply dump: ".var_export($reply, true)."\n\n";
+        $msg .= "Submit data:\n\n";
+        $msg .= "Email: $email\n";
+        mail("felix.ho@loginradius.com", "Project IO Forgot PW Form Error??", $msg);
+        header("location: /error/");
+        exit();
     }
 }
 
@@ -595,8 +571,11 @@ if ($target_name == "reset-password") {
     else if (isset($_POST['form-action']) && $_POST['form-action'] == "reset-pw-submit" && isset($_SESSION['reset_token']) && $_SESSION['reset_token'] != "") {
         $new_password = htmlentities($_POST['password']);
         $confirm_password = htmlentities($_POST['passwordconfirm']);
+        //$error_flag = "N";
+
         if ($new_password != $confirm_password) {
             $_SESSION['error_message'] = '<div><p class="error" id="user-error">'."Passwords not matching.</p></div>";
+            //$error_flag = "Y";
             header("location: /reset-password/?vtype=reset&vtoken=".$_SESSION['reset_token']);
             exit();
         }
@@ -604,33 +583,39 @@ if ($target_name == "reset-password") {
             preg_match('/([A-Z])/', $new_password, $upper_matches);
             if (count($upper_matches) == 0) {
                 $_SESSION['error_message'] = '<div><p class="error" id="user-error">'."Password needs to contain at least one uppercase letter.</p></div>";
+                //$error_flag = "Y";
                 header("location: /reset-password/?vtype=reset&vtoken=".$_SESSION['reset_token']);
                 exit();
             }
             preg_match('/([\d])/', $new_password, $digit_matches);
             if (count($digit_matches) == 0) {
                 $_SESSION['error_message'] = '<div><p class="error" id="user-error">'."Password needs to contain at least one digit.</p></div>";
+                //$error_flag = "Y";
                 header("location: /reset-password/?vtype=reset&vtoken=".$_SESSION['reset_token']);
                 exit();
             }
             preg_match('/([\W])/', $new_password, $special_matches);
             if (count($special_matches) == 0) {
                 $_SESSION['error_message'] = '<div><p class="error" id="user-error">'."Password needs to contain at least one special character.</p></div>";
+                //$error_flag = "Y";
                 header("location: /reset-password/?vtype=reset&vtoken=".$_SESSION['reset_token']);
                 exit();
             }
             if (strlen($new_password) < 8) {
                 $_SESSION['error_message'] = '<div><p class="error" id="user-error">'."Password is too short.</p></div>";
+                //$error_flag = "Y";
                 header("location: /reset-password/?vtype=reset&vtoken=".$_SESSION['reset_token']);
                 exit();
             }
         }
         //call API
-        $reset_pw_api_url = "$hpa_url/password/reset?apiKey=$api_key";
+        //if ($error_flag == "N") {
+        $reset_pw_api_url = "https://lr-dev-deadpool-hpa-cluster-dev1.div4.io/hpa/v1/password/reset?apiKey=$api_key";
         $post_data = array("password" => $new_password, "ResetToken" => $_SESSION['reset_token']);
         $payload = json_encode($post_data);
         $reply = json_decode(lr_api_call($reset_pw_api_url, $payload, "PUT"));
         if (isset($reply->IsPosted) && $reply->IsPosted === true) {
+            //$account_verify = true;
             session_destroy();
             $show_form = "N";
         }
@@ -641,7 +626,7 @@ if ($target_name == "reset-password") {
                 $msg .= "Submit data:\n\n";
                 //$msg .= "Email: $email\n";
                 $msg .= "Password: ".base64_encode($new_password)."\n";
-                mail($debug_email, "$site_name Reset PW API System Error", $msg);
+                mail("felix.ho@loginradius.com", "Project IO Reset PW API System Error", $msg);
                 header("location: /error/");
                 exit();
             }
@@ -653,11 +638,17 @@ if ($target_name == "reset-password") {
             }
             $msg = "API reply dump: ".var_export($reply, true)."\n\n";
             $msg .= "Submit data:\n\n";
+            //$msg .= "Name: $firstname $lastname\n";
+            //$msg .= "Email: $email\n";
             $msg .= "Password: ".base64_encode($new_password)."\n";
-            mail($debug_email, "$site_name Reset PW API Error??", $msg);
+            mail("felix.ho@loginradius.com", "Project IO Reset PW API Error??", $msg);
             header("location: /error/");
             exit();
         }
+        //}
+        //else {
+            //$show_form = "Y";
+        //}
     }
     //direct access to page => kick back to home page
     else {
