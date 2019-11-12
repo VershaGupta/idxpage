@@ -1,0 +1,199 @@
+// main: master.less
+
+// This file contains styles for page layout, such as grid column settings and inner/outer container elements.
+
+// gutters
+@gutter: 24px;
+
+
+// widths
+// column width calc formula (column % - (gutter width * total gutters / total columns))
+.width-100() {
+    width: 100%;
+}
+
+.width-50() {
+    width: ~"calc(50% - ("@gutter ~"/ 2))";
+}
+
+.width-33() {
+    width: ~"calc(33.33% - ("@gutter ~"* 2 / 3))";
+}
+
+.width-25() {
+    width: ~"calc(25% - ("@gutter ~"* 3 / 4))";
+}
+
+
+
+
+
+
+// containers
+section {
+
+    clear: both;
+    overflow: hidden;
+
+    & > div {
+        overflow: hidden;
+        margin: 0 auto;
+        padding: 0 @gutter;
+        max-width: 1248px;
+    }
+
+}
+
+// columns
+.grid-column() {
+    float: left;
+}
+
+.grid {
+
+    &-100 > div {
+        .grid-column;
+        .width-100;
+    }
+
+    // 50% x2
+    &-50 > div {
+        .grid-column;
+        margin-right: @gutter;
+        .width-50;
+
+        &:nth-child(2n) {
+            margin-right: 0;
+        }
+    }
+
+    // 33% x3
+    &-33 > div {
+        .grid-column;
+        margin-right: @gutter;
+        .width-33;
+
+        &:nth-child(3n) {
+            margin-right: 0;
+        }
+    }
+
+    // 25% x4
+    &-25 > div {
+        .grid-column;
+        margin-right: @gutter;
+        .width-25;
+
+        &:nth-child(4n) {
+            margin-right: 0;
+        }
+    }
+
+    // 66%, 33%
+    &-66-33 > div {
+        .grid-column;
+        margin-right: @gutter;
+        width: ~"calc(67% - ("@gutter ~"* 1 / 2))";
+
+        &:nth-child(2n) {
+            margin-right: 0;
+            width: ~"calc(33% - ("@gutter ~"* 1 / 2))";
+        }
+    }
+
+    // 33%, 66%
+    &-33-66 > div {
+        .grid-column;
+        margin-right: @gutter;
+        width: ~"calc(33% - ("@gutter ~"* 1 / 2))";
+
+        &:nth-child(2n) {
+            margin-right: 0;
+            width: ~"calc(67% - ("@gutter ~"* 1 / 2))";
+        }
+    }
+
+    // 75%, 25%
+    &-75-25 > div {
+        .grid-column;
+        margin-right: @gutter;
+        width: ~"calc(75% - ("@gutter ~"* 1 / 2))";
+
+        &:nth-child(2n) {
+            margin-right: 0;
+            width: ~"calc(25% - ("@gutter ~"* 1 / 2))";
+        }
+    }
+
+    // 25%, 75%
+    &-25-75 > div {
+        .grid-column;
+        margin-right: @gutter;
+        width: ~"calc(25% - ("@gutter ~"* 1 / 2))";
+
+        &:nth-child(2n) {
+            margin-right: 0;
+            width: ~"calc(75% - ("@gutter ~"* 1 / 2))";
+        }
+    }
+
+    // 50%, 25%, 25%
+    &-50-25-25 > div {
+        .grid-column;
+
+        &:nth-child(3n+1) {
+            margin-right: @gutter;
+            width: ~"calc(50% - ("@gutter ~"* 2 / 3))";
+        }
+
+        &:nth-child(3n+2) {
+            margin-right: @gutter;
+            width: ~"calc(25% - ("@gutter ~"* 2 / 3))";
+        }
+
+        &:nth-child(3n+3) {
+            margin-right: 0;
+            width: ~"calc(25% - ("@gutter ~"* 2 / 3))";
+        }
+    }
+
+    // 25%, 50%, 25%
+    &-25-50-25 > div {
+        .grid-column;
+
+        &:nth-child(3n+1) {
+            margin-right: @gutter;
+            width: ~"calc(25% - ("@gutter ~"* 2 / 3))";
+        }
+
+        &:nth-child(3n+2) {
+            margin-right: @gutter;
+            width: ~"calc(50% - ("@gutter ~"* 2 / 3))";
+        }
+
+        &:nth-child(3n+3) {
+            margin-right: 0;
+            width: ~"calc(25% - ("@gutter ~"* 2 / 3))";
+        }
+    }
+
+    // 25%, 25%, 50%
+    &-25-25-50 > div {
+        .grid-column;
+
+        &:nth-child(3n+1) {
+            margin-right: @gutter;
+            width: ~"calc(25% - ("@gutter ~"* 2 / 3))";
+        }
+
+        &:nth-child(3n+2) {
+            margin-right: @gutter;
+            width: ~"calc(25% - ("@gutter ~"* 2 / 3))";
+        }
+
+        &:nth-child(3n+3) {
+            margin-right: 0;
+            width: ~"calc(50% - ("@gutter ~"* 2 / 3))";
+        }
+    }
+}

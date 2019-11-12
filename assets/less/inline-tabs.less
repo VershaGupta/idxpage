@@ -1,0 +1,258 @@
+// main: master.less
+
+@inlineTabsBreakPoint: ~"screen and (max-width: 768px)";
+@accordionBreakPoint: ~"screen and (max-width: 649px)";
+
+.inline-tabs {
+    margin: 24px auto;
+}
+
+section.inline-tabs .title {
+    padding-bottom: 48px;
+
+    h3,
+    p {
+        margin-right: 0;
+        margin-left: 0;
+        text-align: left;
+    }
+}
+
+section.inline-tabs {
+    .plain-content p {
+        margin-right: 0;
+        margin-left: 0;
+    }
+}
+
+/* Tab anchor */
+.r-tabs .r-tabs-nav .r-tabs-anchor {
+    display: inline-block;
+    padding: 10px 12px;
+    width: 100%;
+    color: @blue-bright;
+    font-size: 20px;
+    font-weight: 400;
+    text-align: center;
+    text-decoration: none;
+}
+
+.bg-light-01,
+.bg-light-03 {
+    & .accordion-list {
+        background-color: @gray-light;
+    }
+}
+
+.bg-light-02 {
+    & .accordion-list {
+        background-color: @white;
+    }
+}
+
+.bg-dark-02,
+.bg-dark-03 {
+    & .accordion-list {
+        background-color: @blue-dark;
+    }
+}
+
+.bg-dark-01 {
+    & .accordion-list {
+        background-color: @blue-darkest;
+    }
+}
+
+.accordion-list {
+    display: none;
+    background-color: @gray-light;
+    margin-top: @gutter/2;
+
+    @media @accordionBreakPoint {
+        display: block;
+    }
+
+    &:first-of-type {
+        margin-top: 0px;
+    }
+
+    & .anchor {
+        display: block;
+        padding: @gutter/2 @gutter/2+3px;
+        color: @blue-bright;
+        font-size: 20px;
+        font-weight: 400;
+        text-decoration: none;
+        // text-transform: uppercase;
+        background-image: url("images/ui-elements/icon-arrow-down-blue.svg");
+        background-size: 25px 25px;
+        background-repeat: no-repeat;
+        background-position: ~"calc(100% - "@gutter ~")" 50%;
+
+        &:focus {
+            box-shadow: none;
+        }
+
+        & p {
+            width: ~"calc(100% - "@gutter*3 ~")";
+            color: @blue-bright;
+            margin: 0;
+            padding: 0;
+        }
+    }
+
+    &.opened {
+        background-color: @blue-bright;
+
+        & .anchor {
+            background-image: url("images/ui-elements/icon-arrow-up.svg");
+
+            & p {
+                color: @white;
+            }
+        }
+    }
+}
+
+.r-tabs {
+    position: relative;
+
+    & .r-tabs-nav {
+        .display(flex);
+        .flex-direction(row);
+        padding: 0;
+        margin: 0;
+
+        @media @inlineTabsBreakPoint {
+            display: none;
+        }
+
+        & li {
+            margin-bottom: 0px;
+        }
+
+        & .r-tabs-tab {
+            position: relative;
+            .display(flex);
+            .flex-grow(1);
+            .flex-basis(0);
+            .align-items(center);
+            margin-right: @gutter;
+            background-color: @gray-light;
+            list-style: none;
+
+            &:last-of-type{
+                margin-right: 0;
+            }
+
+            & .r-tabs-anchor {
+                .display(flex);
+                .align-self(stretch);
+                .align-items(center);
+                .justify-content(center);
+                width: 100%;
+                color: @blue-bright;
+                font-size: 20px;
+                font-weight: 400;
+                text-align: center;
+                text-decoration: none;
+                line-height: 1.5;
+                // text-transform: uppercase;
+                padding: 10px 12px;
+
+                &:focus {
+                    box-shadow: none;
+                }
+            }
+        }
+
+        & .r-tabs-state-active {
+            background-color: @blue-bright;
+
+            & .r-tabs-anchor {
+                color: @white;
+                border-top-right-radius: 4px;
+                border-top-left-radius: 4px;
+            }
+        }
+
+        & .r-tabs-state-disabled {
+            opacity: 0.5;
+        }
+    }
+
+    & .r-tabs-panel {
+        display: none;
+        // padding: 15px;
+        background-color: @white;
+        border-bottom: 4px solid @white;
+    }
+
+    & .r-tabs-accordion-title {
+        display: none;
+        margin-top: @gutter/2;
+
+        @media @inlineTabsBreakPoint {
+            display: block;
+        }
+
+        &:first-of-type {
+            margin-top: 0px;
+        }
+
+        & .r-tabs-anchor {
+            display: block;
+            padding: @gutter/2 @gutter/2+3px;
+            color: @blue-bright;
+            font-size: 20px;
+            font-weight: 400;
+            text-decoration: none;
+            // text-transform: uppercase;
+            background-color: @gray-light;
+            background-image: url("images/ui-elements/icon-arrow-down-blue.svg");
+            background-size: 25px 25px;
+            background-repeat: no-repeat;
+            background-position: ~"calc(100% - "@gutter ~")" 50%;
+
+            &:focus {
+                box-shadow: none;
+            }
+
+            & p {
+                width: ~"calc(100% - "@gutter*3 ~")";
+                color: @blue-bright;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
+        &.r-tabs-state-active {
+           & .r-tabs-anchor {
+               color: @white;
+               background-color: @blue-bright;
+               background-image: url("images/ui-elements/icon-arrow-up.svg");
+
+               & p {
+                   color: @white;
+               }
+            }
+        }
+
+        &.r-tabs-state-disabled {
+            opacity: 0.5;
+        }
+    }
+
+    & .r-tabs-panel.r-tabs-state-active {
+        display: block;
+    }
+
+    & .r-line {
+        width: 100%;
+        height: 5px;
+        padding: 0;
+        margin: 0;
+        background-color: @blue-bright;
+        border: none;
+    }
+}

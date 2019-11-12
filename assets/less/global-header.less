@@ -1,0 +1,523 @@
+// main: master.less
+
+// This file is for the global header, including navigation, mega menu, logo, toolbar (login, search, header cta), mobile version
+
+@menuHeightDesktop: 96px;
+@menuHeightMobile: 60px;
+
+@megaMenuBPMobile: 800px; // changes whole nav to mobile hamburger nav
+@breakPointMenu1Num: 1000px; // shrink logo
+//@megaMenuBPInter2: 1130px; // shrink mega menu links spacing
+//@megaMenuBPInter3: 1075px; // collapse the right side of the mega menu (free trial button)
+
+@breakPointMenu1: ~"screen and (max-width: " @breakPointMenu1Num ~")";
+
+
+
+@menuSizeDesktop: ~"screen and (min-width: " @megaMenuBPMobile ~")";
+
+@menuSizeMobile: ~"screen and (max-width: " @megaMenuBPMobile ~")";
+
+@inIE: ~"screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none)";
+
+
+
+
+@imgIconToggleMenu: "data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 24 24' style='enable-background:new 0 0 24 24;' xml:space='preserve'%3E%3Cstyle type='text/css'%3E .st0%7Bfill:none;%7D .st1%7Bfill:%23FFFFFF;%7D%0A%3C/style%3E%3Cpath class='st0' d='M0,0h24v24H0V0z'/%3E%3Cpath class='st1' d='M3,18h18v-2H3V18z M3,13h18v-2H3V13z M3,6v2h18V6H3z'/%3E%3C/svg%3E%0A";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Make focus work for keyboard users
+.keynav-mode {
+    box-shadow: 0px 0px 5px 3px fade(@blue-bright, 50%) !important;
+}
+
+
+body {
+    margin: 0;
+    margin-top: @menuHeightDesktop;
+    
+    @media @menuSizeMobile {
+        margin-top: @menuHeightMobile;
+    }
+}
+
+
+nav {
+    .display(flex);
+    position: fixed;
+    width: 100%;
+    height: @menuHeightDesktop;
+    top: 0;
+    
+    background-color: @white;
+    
+    border-bottom: @thicknessOfLines solid @io-red;
+    
+    z-index: 900;
+    
+    @media @menuSizeMobile {
+        height: @menuHeightMobile;
+    }
+    
+    
+    // big sections in the nav
+    & > div {
+        @buttonSectionWidth: 200px;
+        
+        // left side ie main nav
+        &:nth-child(1) {
+            .display(flex);
+            width: ~"calc(100% - " @buttonSectionWidth~")";
+            
+            z-index: 902;
+            
+            @media @menuSizeMobile {
+                width: 100%;
+                
+                background-color: @white;
+            }
+        }
+        
+        // right side ie Button
+        &:nth-child(2) {
+            .display(flex);
+            .align-items(center);
+            width: @buttonSectionWidth;
+            padding-right: @gutter;
+            
+            z-index: 903;
+            
+            @media @menuSizeMobile {
+                display: none;
+            }
+        }
+        
+        
+        & > .logo {
+            .display(flex);
+            .align-content(center);
+            width: 100%; 
+            max-width: 250px;
+            min-width: 150px;
+            
+            margin: 0 @gutter 0 @gutter*2;
+            
+            
+            & > svg {
+                width: 100%;
+                
+                @media @menuSizeMobile {
+                    max-width: 150px;
+                    padding: @gutter/2;
+                }
+            }
+            
+            @media @breakPointMenu1 {
+                max-width: 150px;
+                
+                margin: 0 0 0 @gutter;
+            }
+            
+            @media @menuSizeMobile {
+                .justify-content(center);
+                max-width: 1000px;
+                
+                margin: 0;
+            }
+        }
+        
+        
+        
+        & > .main-menu-items {
+            .unselectable();
+            
+            .display(flex);
+            .align-items(stretch);
+            width: 100%;
+            left: 0;
+            top: 0;
+            
+            margin-left: @gutter;
+            
+            z-index: 902;
+            
+            
+            @media @menuSizeMobile {
+                position: absolute;
+                .flex-direction(column);
+                width: 100%;
+                max-width: 200px;
+                top: @menuHeightMobile - @thicknessOfLines;
+                
+                .transform(translateX(-100%));
+                
+                margin: 0;
+                
+                
+                background-color: @white;
+                
+                padding-top: @gutter/2;
+                padding-bottom: @gutter/2;
+                
+                
+            }
+            
+            
+            & > a {
+                .display(flex);
+                .align-items(center);
+                margin-right: @gutter;
+                
+                font-weight: 700;
+                text-decoration: none;
+                color: @blue-darkest;
+                
+                &:hover {
+                    color: @io-red;
+                }
+                
+                @media @menuSizeMobile {
+                    width: 100%;
+                    
+                    
+                    padding: @gutter/2 @gutter @gutter/2 @gutter;
+                    margin: 0;
+                }
+            }
+        }
+    }   
+    
+    
+    
+    & .hamburger {
+        display: none;
+        z-index: 930;
+
+        @media @menuSizeMobile {
+            position: absolute;
+            display: block;
+            width: @menuHeightMobile;
+            height: @menuHeightMobile;
+            
+            padding: @menuHeightMobile/3 @menuHeightMobile/3.5;
+
+
+            & > span {
+                display: block;
+                width: 90%;
+                height: 10%;
+                margin-bottom: 15%;
+                margin-top: 15%;
+                margin-right: auto;
+                margin-left: auto;
+                background-color: @io-red;
+            }
+
+
+
+        }
+    }
+    
+    
+    & > .menu-overlay {
+        position: absolute;
+        display: none;
+        width: 100vw;
+        height: 100vh;
+        top: 0;
+        left: 0;
+
+        opacity: 0;
+        background-color: fade(@black, 50%);
+        
+        z-index: 901;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+@animationTiming: 300ms;
+
+
+
+
+.hamburgerIconTransformToArrow1 {
+    .animation-name(hamburgerIconTransformToArrow1);
+    .animation-duration(@animationTiming);
+    .animation-fill-mode(forwards);
+    .animation-direction(normal);
+    .animation-timing-function(ease-in-out);
+}
+
+@keyframes hamburgerIconTransformToArrow1 { .animhamburgerIconTransformToArrow1(); }
+@-webkit-keyframes hamburgerIconTransformToArrow1 { .animhamburgerIconTransformToArrow1(); }
+
+.animhamburgerIconTransformToArrow1() {
+    from {
+        .transform(translate3d(0,0,0) rotate3d(0,0,1,0deg));
+        width: 90%;
+    } 
+    to {
+        .transform(translate3d(-48%,155%,0) rotate3d(0,0,1,-30deg));
+        width: 50%;
+    }
+}
+
+.hamburgerIconTransformToArrow1Reset {
+    .animation-name(hamburgerIconTransformToArrow1Reset);
+    .animation-duration(@animationTiming);
+    .animation-fill-mode(forwards);
+    .animation-direction(normal);
+    .animation-timing-function(ease-in-out);
+}
+
+@keyframes hamburgerIconTransformToArrow1Reset { .animhamburgerIconTransformToArrow1Reset(); }
+@-webkit-keyframes hamburgerIconTransformToArrow1Reset { .animhamburgerIconTransformToArrow1Reset(); }
+
+.animhamburgerIconTransformToArrow1Reset() {
+    from {
+        .transform(translate3d(-48%,155%,0) rotate3d(0,0,1,-30deg));
+        width: 50%;
+    } 
+    to {
+        .transform(translate3d(0,0,0) rotate3d(0,0,1,0deg));
+        width: 90%;
+    }
+}
+
+
+
+
+.hamburgerIconTransformToArrow2 {
+    .animation-name(hamburgerIconTransformToArrow2);
+    .animation-duration(@animationTiming);
+    .animation-fill-mode(forwards);
+    .animation-direction(normal);
+    .animation-timing-function(ease-in-out);
+}
+
+
+@keyframes hamburgerIconTransformToArrow2 { .animhamburgerIconTransformToArrow2(); }
+@-webkit-keyframes hamburgerIconTransformToArrow2 { .animhamburgerIconTransformToArrow2(); }
+
+.animhamburgerIconTransformToArrow2() {
+    from {
+        .transform(translate3d(0,0,0));
+        width: 90%;
+    } 
+    to {
+        .transform(translate3d(-5%,0,0));
+        width: 80%;
+    }
+}
+
+.hamburgerIconTransformToArrow2Reset {
+    .animation-name(hamburgerIconTransformToArrow2Reset);
+    .animation-duration(@animationTiming);
+    .animation-fill-mode(forwards);
+    .animation-direction(normal);
+    .animation-timing-function(ease-in-out);
+}
+
+@keyframes hamburgerIconTransformToArrow2Reset { .animhamburgerIconTransformToArrow2Reset(); }
+@-webkit-keyframes hamburgerIconTransformToArrow2Reset { .animhamburgerIconTransformToArrow2Reset(); }
+
+.animhamburgerIconTransformToArrow2Reset() {
+    from {
+        .transform(translate3d(-5%,0,0));
+        width: 80%;
+    } 
+    to {
+        .transform(translate3d(0,0,0));
+        width: 90%;
+    }
+}
+
+
+
+.hamburgerIconTransformToArrow3 {
+    .animation-name(hamburgerIconTransformToArrow3);
+    .animation-duration(@animationTiming);
+    .animation-fill-mode(forwards);
+    .animation-direction(normal);
+    .animation-timing-function(ease-in-out);
+}
+
+@keyframes hamburgerIconTransformToArrow3 { .animhamburgerIconTransformToArrow3(); }
+@-webkit-keyframes hamburgerIconTransformToArrow3 { .animhamburgerIconTransformToArrow3(); }
+
+.animhamburgerIconTransformToArrow3() {
+    from {
+        .transform(translate3d(0,0,0) rotate3d(0,0,1,0deg));
+        width: 90%;
+    } 
+    to {
+        .transform(translate3d(-48%,-160%,0) rotate3d(0,0,1,30deg));
+        width: 50%;
+    }
+}
+
+
+.hamburgerIconTransformToArrow3Reset {
+    .animation-name(hamburgerIconTransformToArrow3Reset);
+    .animation-duration(@animationTiming);
+    .animation-fill-mode(forwards);
+    .animation-direction(normal);
+    .animation-timing-function(ease-in-out);
+}
+
+@keyframes hamburgerIconTransformToArrow3Reset { .animhamburgerIconTransformToArrow3Reset(); }
+@-webkit-keyframes hamburgerIconTransformToArrow3Reset { .animhamburgerIconTransformToArrow3Reset(); }
+
+.animhamburgerIconTransformToArrow3Reset() {
+    from {
+        .transform(translate3d(-48%,-160%,0) rotate3d(0,0,1,30deg));
+        width: 50%;
+    } 
+    to {
+        .transform(translate3d(0,0,0) rotate3d(0,0,1,0deg));
+        width: 90%;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+// mobile nav
+
+@mobileNavStart: -100%;
+@mobileNavEnd: 0;
+
+.mobileNavOpen {
+    .animation-name(mobileNavOpen);
+    .animation-duration(@animationTiming);
+    .animation-fill-mode(forwards);
+    .animation-direction(normal);
+    .animation-timing-function(ease-in-out);
+
+}
+
+
+@keyframes mobileNavOpen { .animMobileNavOpen(); }
+@-webkit-keyframes mobileNavOpen { .animMobileNavOpen(); }
+
+.animMobileNavOpen() {
+    from {
+        .transform(translateX(@mobileNavStart));
+    } 
+    to {
+        .transform(translateX(@mobileNavEnd));
+    }
+}
+
+
+
+
+.mobileNavClose {
+    .animation-name(mobileNavClose);
+    .animation-duration(@animationTiming);
+    .animation-fill-mode(forwards);
+    .animation-direction(normal);
+    .animation-timing-function(ease-in-out);
+
+}
+
+
+@keyframes mobileNavClose { .animMobileNavClose(); }
+@-webkit-keyframes mobileNavClose { .animMobileNavClose(); }
+
+.animMobileNavClose() {
+    from {
+        .transform(translateX(@mobileNavEnd));
+    } 
+    to {
+        .transform(translateX(@mobileNavStart));
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.menuOverlayShow {
+    .animation-name(menuOverlayShow);
+    .animation-duration(@animationTiming);
+    .animation-fill-mode(forwards);
+    .animation-direction(normal);
+    .animation-timing-function(ease-in-out);
+}
+
+
+@keyframes menuOverlayShow { .animMenuOverlayShow(); }
+@-webkit-keyframes menuOverlayShow { .animMenuOverlayShow(); }
+
+.animMenuOverlayShow() {
+    from {
+        opacity: 0.0;
+    } 
+    to {
+        opacity: 1.0;
+    }
+}
+
+
+.menuOverlayHide {
+    .animation-name(menuOverlayHide);
+    .animation-duration(@animationTiming);
+    .animation-fill-mode(forwards);
+    .animation-direction(normal);
+    .animation-timing-function(ease-in-out);
+}
+
+
+@keyframes menuOverlayHide { .animMenuOverlayHide(); }
+@-webkit-keyframes menuOverlayHide { .animMenuOverlayHide(); }
+
+.animMenuOverlayHide() {
+    from {
+        opacity: 1.0;
+    } 
+    to {
+        opacity: 0.0;
+    }
+}
+
+

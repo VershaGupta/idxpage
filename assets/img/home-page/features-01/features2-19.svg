@@ -1,0 +1,60 @@
+<svg id="bd80a585-2e9a-40bf-ad08-14ccff8331ff" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150.51494 124.40374">
+  <defs>
+    <style>
+      .b0cac919-4cae-49ed-87d3-157ce23978a8 {
+        fill: none;
+        stroke: #ef554e;
+        stroke-miterlimit: 10;
+        stroke-width: 3px;
+      }
+
+      .bd215283-3e90-400e-9bd3-05a3e29bb9b1 {
+        fill: #fff;
+      }
+
+      .add18d24-b6cb-405a-a3fd-daa397b17f40 {
+        fill: #0c2134;
+      }
+    </style>
+  </defs>
+  <title>features2</title>
+  <g>
+    <line class="b0cac919-4cae-49ed-87d3-157ce23978a8" x1="44.55761" y1="29.05698" x2="6.64272" y2="66.97187"/>
+    <line class="b0cac919-4cae-49ed-87d3-157ce23978a8" x1="42.3874" y1="88.92932" x2="6.64272" y2="66.97187"/>
+    <line class="b0cac919-4cae-49ed-87d3-157ce23978a8" x1="113.89029" y1="35.05698" x2="142.48604" y2="62.20187"/>
+    <line class="b0cac919-4cae-49ed-87d3-157ce23978a8" x1="102.14561" y1="95.56761" x2="142.48604" y2="62.20187"/>
+    <line class="b0cac919-4cae-49ed-87d3-157ce23978a8" x1="102.37966" y1="8.0289" x2="52.3371" y2="116.70707"/>
+    <g>
+      <circle class="bd215283-3e90-400e-9bd3-05a3e29bb9b1" cx="102.37966" cy="8.0289" r="8.0289"/>
+      <circle class="add18d24-b6cb-405a-a3fd-daa397b17f40" cx="102.37966" cy="8.0289" r="3.19136"/>
+    </g>
+    <g>
+      <circle class="bd215283-3e90-400e-9bd3-05a3e29bb9b1" cx="52.49008" cy="116.37485" r="8.0289"/>
+      <circle class="add18d24-b6cb-405a-a3fd-daa397b17f40" cx="52.49008" cy="116.37485" r="3.19136"/>
+    </g>
+    <g>
+      <circle class="bd215283-3e90-400e-9bd3-05a3e29bb9b1" cx="114.08206" cy="35.23901" r="8.0289"/>
+      <circle class="add18d24-b6cb-405a-a3fd-daa397b17f40" cx="114.08206" cy="35.23901" r="3.19136"/>
+    </g>
+    <g>
+      <circle class="bd215283-3e90-400e-9bd3-05a3e29bb9b1" cx="102.42087" cy="95.33995" r="8.0289"/>
+      <circle class="add18d24-b6cb-405a-a3fd-daa397b17f40" cx="102.42087" cy="95.33995" r="3.19136"/>
+    </g>
+    <g>
+      <circle class="bd215283-3e90-400e-9bd3-05a3e29bb9b1" cx="142.48604" cy="62.20187" r="8.0289"/>
+      <circle class="add18d24-b6cb-405a-a3fd-daa397b17f40" cx="142.48604" cy="62.20187" r="3.19136"/>
+    </g>
+    <g>
+      <circle class="bd215283-3e90-400e-9bd3-05a3e29bb9b1" cx="8.0289" cy="67.0394" r="8.0289"/>
+      <circle class="add18d24-b6cb-405a-a3fd-daa397b17f40" cx="8.0289" cy="67.0394" r="3.19136"/>
+    </g>
+    <g>
+      <circle class="bd215283-3e90-400e-9bd3-05a3e29bb9b1" cx="44.57864" cy="29.03595" r="8.0289"/>
+      <circle class="add18d24-b6cb-405a-a3fd-daa397b17f40" cx="44.57864" cy="29.03595" r="3.19136"/>
+    </g>
+    <g>
+      <circle class="bd215283-3e90-400e-9bd3-05a3e29bb9b1" cx="42.61441" cy="89.06876" r="8.0289"/>
+      <circle class="add18d24-b6cb-405a-a3fd-daa397b17f40" cx="42.61441" cy="89.06876" r="3.19136"/>
+    </g>
+  </g>
+</svg>

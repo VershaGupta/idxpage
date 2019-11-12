@@ -1,0 +1,31 @@
+<!--Insert the CDN Link on your login page’s header section-->
+<script src="https://auth.lrcontent.com/v2/js/LoginRadiusV2.js"  type="text/javascript" ></script>
+
+<!--Add the following into your login page’s javascript-->
+<script> 
+// Initialize the LoginRadius Client
+  var commonOptions = {
+    commonOptions.apiKey = '<API KEY>';
+    commonOptions.appName = '<APP NAME>';
+    commonOptions.debugMode=true;
+  };
+  var  LRObject = new LoginRadiusV2(commonOptions);
+
+  // Initialize the login container
+  var login_options = {};
+  login_options.container = 'login-container';
+  // The login response can be passed on in your auth workflow
+  login_options.onSuccess = function(response) {
+    console.log(response);
+  };
+  // Errors with logins can be retrieved in this callback
+  login_options.onError = function(errors) {
+    console.log(errors);
+  };
+  LRObject.util.ready(function() {
+    LRObject.init('login',login_options);
+  });
+</script>
+
+<!--Insert the login container onto your page-->
+<div id="login-container"></div>
