@@ -52,7 +52,7 @@ function validateFinishSignUpForm() {
     
     if(appnameReason == undefined && domainReason == undefined) {
         setTimeout(function () {
-            $("input:submit").replaceWith("<div class='button-loader'><div class='lds-ring'><div></div><div></div><div></div><div></div></div></div>");
+            $("input:submit").replaceWith("<div class='button-loader'><div class='lds-ring'><div></div><div></div><div></div><div></div></div></div><p>Please wait while your account is being set up...</p>");
         }, 50);
         
         return true;
