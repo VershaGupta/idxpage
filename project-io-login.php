@@ -12,14 +12,14 @@
                     <div class="labels">
                         <label for="email">Email*</label>
                     </div>
-                    <p class="error emailError"></p>
+                    <p class="error emailError align-left"></p>
                     <input type="text" name="email" autocomplete="email"<?php if (isset($_SESSION['email']) && $_SESSION['email'] != "") { ?>value="<?php echo $_SESSION['email']; ?>"<?php } ?>>
                 </div>
                 <div>
                     <div class="labels">
                         <label for="password">Password*</label>
                     </div>
-                    <p class="error passwordError"></p>
+                    <p class="error passwordError align-left"></p>
                     <input type="password" name="password" autocomplete="current-password">
                     <p><a href="/forgot-password/">Forgot your password?</a></p>
                 </div>

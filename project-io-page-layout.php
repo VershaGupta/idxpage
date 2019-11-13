@@ -126,7 +126,8 @@ if ($target_name == "reset-password") { ?>
 <script type='text/javascript' src="/project-io/js/reset-password.js"></script>
 <?php 
 }
-if (isset($_SESSION['error_message']) && $_SESSION['error_message'] != "") { ?>
+if (isset($_SESSION['error_message']) && $_SESSION['error_message'] != "") {
+  $_SESSION['error_message'] = ""; ?>
 <script>
 $('#user-error').css("display", "block");
 $('#user-error').next().css("border-color", "#EF544E");

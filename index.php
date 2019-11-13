@@ -260,7 +260,7 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "signup-submit") {
             exit();
         }
         if (in_array($reply->ErrorCode, $api_error_codes_user)) {
-            $_SESSION['error_message'] = '<div><p class="error" id="user-error">'.$reply->Message."<br>$reply->Description</p></div>";
+            $_SESSION['error_message'] = '<div><p class="error" id="user-error">'."$reply->Description</p></div>";
             //$_SESSION['name'] = "$firstname $lastname";
             $_SESSION['name'] = $firstname;
             $_SESSION['email'] = $email;
@@ -389,7 +389,7 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "project-setup-subm
                 exit();
             }
             if (in_array($reply->ErrorCode, $api_error_codes_user)) {
-                $_SESSION['error_message'] = '<div><p class="error" id="user-error">'.$reply->Message."<br>$reply->Description</p></div>";
+                $_SESSION['error_message'] = '<div><p class="error" id="user-error">'."$reply->Description</p></div>";
                 $_SESSION['domain'] = $domain;
                 header("location: /finish-signup/");
                 exit();
@@ -526,7 +526,7 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "login-submit") {
             exit();
         }
         if (in_array($reply->ErrorCode, $api_error_codes_user)) {
-            $_SESSION['error_message'] = '<div><p class="error" id="user-error">'.$reply->Message."<br>$reply->Description</p></div>";
+            $_SESSION['error_message'] = '<div><p class="error" id="user-error">'."$reply->Description</p></div>";
             $_SESSION['email'] = $email;
             //email
             //$msg = "Error code: ".$reply->ErrorCode."\n".$reply->Message."\n".$reply->Description."\n\n";
@@ -570,7 +570,7 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "forgot-pw-submit")
             exit();
         }
         else if (in_array($reply->ErrorCode, $api_error_codes_user)) {
-            $_SESSION['error_message'] = '<div><p class="error" id="user-error">'.$reply->Message."<br>$reply->Description</p></div>";
+            $_SESSION['error_message'] = '<div><p class="error" id="user-error">'."$reply->Description</p></div>";
             $_SESSION['email'] = $email;
         }
         else {
@@ -647,7 +647,7 @@ if ($target_name == "reset-password") {
             }
             if (in_array($reply->ErrorCode, $api_error_codes_user)) {
                 //error code 1175 token expired
-                $_SESSION['error_message'] = '<p class="error emailError">'.$reply->Message."<br>$reply->Description</p>";
+                $_SESSION['error_message'] = '<p class="error emailError">'."<br>$reply->Description</p>";
                 header("location: /forgot-password/");
                 exit();
             }
