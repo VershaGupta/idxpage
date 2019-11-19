@@ -23,7 +23,7 @@
         <img src="/project-io/img/home-page/logo-bar/pw.png" alt="ProgrammableWeb logo">
     </div>
 </section>
-<section class="bg-light-02" id="features">
+<!--<section class="bg-light-02" id="features">
     <div class="grid-100">
         <div class="center-50 margin-top--x-lg">
             <div class="code-description">
@@ -169,7 +169,7 @@
           </div>
       </div>
     </div>
-</section>
+</section>-->
 <section class="bg-light-01">
     <div class="grid-100">
         <div class="center-50-top margin-top--x-lg margin-bottom--x-lg">
