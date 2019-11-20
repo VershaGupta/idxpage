@@ -1,31 +1,33 @@
 <!--Insert the CDN Link on your login page’s header section-->
-<script src="https://auth.lrcontent.com/v2/js/LoginRadiusV2.js"  type="text/javascript" ></script>
+
+<script 
+  type="text/javascript" 
+  src="https://auth.loginradius.io/LoginRadiusIO.js">
+</script>
+
 
 <!--Add the following into your login page’s javascript-->
 <script> 
-// Initialize the LoginRadius Client
-  var commonOptions = {
-    commonOptions.apiKey = '<API KEY>';
-    commonOptions.appName = '<APP NAME>';
-    commonOptions.debugMode=true;
-  };
-  var  LRObject = new LoginRadiusV2(commonOptions);
+const config = {
+  common: {
+    apiKey: "<Your API key>",
+    verificationUrl: "<Path to your verification page>"
+  },
+  login: {
+    container: "login-container",
+    onSuccess: function (response) {
+      // success handler for successful login
+    },
+    onError: function (error) {
+      // error handler for any errors occured in login
+    }
+  }
+};
 
-  // Initialize the login container
-  var login_options = {};
-  login_options.container = 'login-container';
-  // The login response can be passed on in your auth workflow
-  login_options.onSuccess = function(response) {
-    console.log(response);
-  };
-  // Errors with logins can be retrieved in this callback
-  login_options.onError = function(errors) {
-    console.log(errors);
-  };
-  LRObject.util.ready(function() {
-    LRObject.init('login',login_options);
-  });
-</script>
+const LRObject = new LoginRadiusIO(config);
+
+LRObject.UIFramework.login();
+   </script>
 
 <!--Insert the login container onto your page-->
 <div id="login-container"></div>

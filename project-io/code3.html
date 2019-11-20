@@ -1,24 +1,31 @@
 <!--Insert the CDN Link on your HTML page’s header section-->
-<script src="https://auth.lrcontent.com/v2/js/LoginRadiusV2.js"  type="text/javascript" ></script>
+<script 
+  type="text/javascript" 
+  src="https://auth.loginradius.io/LoginRadiusIO.js">
+</script>
+
 
 <!--Add the following into your login page’s javascript-->
 <script> 
   // Initialize the LoginRadius Client
-  var commonOptions = {
-    commonOptions.apiKey = '<API KEY>';
-    commonOptions.appName = '<APP NAME>';
+  const config = {
+      common: {
+         apiKey: "<Your API key>",
+         isSSOEnabled: true,
+      },
+      login: {
+    container: "login-container",
+    onSuccess: function (response) {
+      // success handler for successful login
+    },
+    onError: function (error) {
+      // error handler for any errors occured in login
+    }
   }
-  var LRObject= new LoginRadiusV2(commonOptions);
-
-  var ssologin_options= {};
-  
-  // Token from an activated SSO session can be retrieved in this callback
-  ssologin_options.onSuccess = function(response) {
-    console.log(response);
   };
-
-  LRObject.util.ready(function() {
-    LRObject.init("ssoLogin", ssologin_options);
-
-  });
+  const LRObject = new LoginRadiusIO(config);
+LRObject.UIFramework.login();
 </script>
+
+<!--Insert the login container onto your page-->
+<div id="login-container"></div>
