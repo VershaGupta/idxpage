@@ -505,7 +505,7 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "login-submit") {
             else {
                 $_SESSION['suggest_appname'] = "dev-$identity_check_reply->FirstName-".mt_rand(10000, 99999);
             } 
-            $_SESSION['domain'] = htmlentities(substr($email, $separate_pos + 1));
+            $_SESSION['domain'] = "https://" + htmlentities(substr($email, $separate_pos + 1));
             $_SESSION['location'] = "US";  //force datacenter default
             header("location: /finish-signup/");  //second step
             exit();

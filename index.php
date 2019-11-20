@@ -241,7 +241,7 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "signup-submit") {
             $suggest_appname = "dev-$temp_appname-".mt_rand(10000, 99999);
         }
         $_SESSION['suggest_appname'] = $suggest_appname;       
-        $_SESSION['domain'] = htmlentities(substr($email, $separate_pos + 1));
+        $_SESSION['domain'] = "https://" + htmlentities(substr($email, $separate_pos + 1));
         $_SESSION['location'] = "US";  //force datacenter default
         header("location: /finish-signup/");  //second step
         exit();
@@ -491,7 +491,6 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "login-submit") {
             $reverify_reply = json_decode(lr_api_call($reverify_api_url, $payload, "PUT"));
         }
         $appname_exist_check = json_decode(file_get_contents("$provision_url/apps?Uid=".$identity_check_reply->Uid));
-        var_dump($appname_exist_check);
         if (isset($appname_exist_check->IsExist) && $appname_exist_check->IsExist == false) {
             //force back to the appName setup page!
             $separate_pos = strpos($email, "@");
@@ -505,7 +504,7 @@ if (isset($_POST['form-action']) && $_POST['form-action'] == "login-submit") {
             else {
                 $_SESSION['suggest_appname'] = "dev-$identity_check_reply->FirstName-".mt_rand(10000, 99999);
             } 
-            $_SESSION['domain'] = htmlentities(substr($email, $separate_pos + 1));
+            $_SESSION['domain'] = "https://" + htmlentities(substr($email, $separate_pos + 1));
             $_SESSION['location'] = "US";  //force datacenter default
             header("location: /finish-signup/");  //second step
             exit();
