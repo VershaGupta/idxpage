@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+  <div id="login-container"></div>
+  <div id="orgnaiz-container"></div>
+   <div id="r-container"></div>
+  <head>
+
+<script src="http://localhost/js/LoginRadiusv2.js"  type='text/javascript' ></script>
+ 
+  </head>
+  <body>
+   
+ test
+ <script>
+        var commonOptions = {};
+		commonOptions.isB2BEnabled = true;
+		
+		//commonOptions.organizationName = "AEgrzd";
+        commonOptions.apiKey = "6623f7b4-0d06-4b49-9b39-9ee46503b20a";
+        commonOptions.hashTemplate= true;
+        commonOptions.sott ="<Get_Sott>";
+        commonOptions.verificationUrl = window.location;//Change as per requirement
+        var LRObject= new LoginRadiusV2(commonOptions);
+				var login_options = {};
+login_options.onSuccess = function(response) {
+//On Success
+console.log(response);
+};
+login_options.onError = function(errors) {
+//On Errors
+console.log(errors);
+};
+login_options.container = "login-container";
+
+		var r_options = {};
+r_options.onSuccess = function(response) {
+//On Success
+console.log(response);
+};
+r_options.onError = function(errors) {
+//On Errors
+console.log(errors);
+};
+r_options.container = "r-container";
+
+
+
+
+		if(LRObject.util.getQueryParameterByName("promptOrganizationName")){
+		alert("TErbgdfx");
+		LRObject.options.promptOrganization = true;
+		LRObject.init('login',login_options);
+		}
+		else {
+		LRObject.options.promptOrganization = false;
+		LRObject.init('registration',r_options);
+		}
+
+
+
+
+
+	
+	
+	
+		var o_options = {};
+
+o_options.onError = function(errors) {
+//On Errors
+console.log(errors);
+};
+o_options.container = "orgnaiz-container";
+
+
+LRObject.init('organization',o_options);
+</script>
+
+
+
+</body>
+</html> 

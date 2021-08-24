@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+  <head>
+   <script    src="https://mojoauth-cdn.netlify.app/js/mojoauth.min.js ">
+   </script>
+  </head>
+  <body>
+   
+     <div class="mojoauth-passwordless-form"></div>
+      <script>
+        const config = {
+          // Enter you API Key
+          apikey: "f101b0fb-31df-4ab1-8468-1a8d089817d1",
+          // function that will be called after successful login with profile data
+          callback: function (data) {
+            alert("Please check console to see profile data");
+            console.log(data);      
+          }
+        }
+        const mojoauth = new MojoAuth(config);
+        mojoauth.signInWithMagicLink();
+      </script>
+
+  </body>
+</html> 
